@@ -5,7 +5,7 @@ def quick_sort(x):
 
     def q_sort(x, left, right):
         if (left == right):
-            return x
+            return
         pivot_value = find_pivot(x, left, right)
         partition_point = partition(x, left, right, pivot_value)
         q_sort(x, left, partition_point-1)
