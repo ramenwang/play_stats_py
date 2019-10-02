@@ -2,3 +2,6 @@
 Untitled.ipynb
 /test_folder
 cvxopt/
+/venv
+*test.py
+.vscode/
