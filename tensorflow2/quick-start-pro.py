@@ -26,13 +26,52 @@ print(x_train.shape)
 
 #%%
 train_ds = tf.data.Dataset.from_tensor_slices(
-    (x_train, y_train)).shuffle(10000).batch(32)
+    (x_train, y_train)).shuffle(10000).batch(64)
 
-test_ds = tf.data.Dataset.from_tensor_slices((x_test, y_test)).batch(32)
+test_ds = tf.data.Dataset.from_tensor_slices((x_test, y_test)).batch(64)
+
+
+#%%
+print(train_ds)
+print(train_ds)
+
+#%%
+class testModel(Model):
+    def __init__(self):
+        super(testModel, self).__init__()
+        self.conv1 = Conv2D(32, 3, activation = 'relu')
+        self.flatten = Flatten()
+        self.d1 = Dense(128, activation = 'relu')
+        self.d2 = Dense(10, activation = 'softmax')
+
+    def call(self, x):
+        x = self.conv1(x)
+        x = self.flatten(x)
+        x = self.d1(x)
+        x = self.d2(x)
+        return x
+
+model = testModel()
+
+#%%
+loss_object_function = tf.keras.losses.sparse_categorical_crossentropy()
+optimizor = tf.keras.optimizers.Adam()
+train_loss = tf.keras.metrics.Mean(name='train_loss')
+train_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='train_accuracy')
+test_loss = tf.keras.metrics.Mean(name='test_loss')
+test_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='test_accuracy')
 
 
 #%%
-print(x_train.shape)
-print(y_train.shape)
+@tf.function
+def train_step(images, labels):
+    with tf.GradientTape() as tape:
+        predictions = model(images)
+        loss = loss_object_function(labels, predictions)
+    grediants = tape.grediants(loss, model.trainable_variables)
 
-#%%
+    train_loss(loss)
+    train_accuracy(labels, predictions)
+
+
+
