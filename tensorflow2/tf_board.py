@@ -70,13 +70,14 @@ if __name__ == "__main__":
         test_acc = np.sum(max_idx.numpy()==y_test) / len(y_test)
         print(f"Epoch: {epoch + 1}, loss={ave_loss:.3f}, test set accuracy={test_acc*100:.3f}%")
         
+        '''
         if epoch == 0:
             correct_img   = tf.boolean_mask(x_test, max_idx.numpy()==y_test)
             incorrect_img = tf.boolean_mask(x_test, max_idx.numpy()!=y_test)
-
             with train_summary_writer.as_default():
-                tf.summary.image('correct_images', tf.reshape(correct_img,(-1,28,28,1)), max_outputs=10)
-                tf.summary.iamge('incorrect_images', tf.reshape(incorrect_img,(-1,28,28,1)), max_outputs=10)
+                tf.summary.image('correct_images', tf.reshape(correct_img,(-1,28,28,1)), max_outputs=3, step=epoch)
+                tf.summary.image('incorrect_images', tf.reshape(incorrect_img,(-1,28,28,1)), max_outputs=3, step=epoch)
+        '''
 
         with train_summary_writer.as_default():
             tf.summary.scalar('loss', ave_loss, step=epoch)
