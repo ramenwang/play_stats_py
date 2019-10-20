@@ -5,6 +5,7 @@ import tensorflow as tf
 @tf.function
 def identity(x):
     print('Graph created!')
+    tf.print('Running graph!')
 
 
 x1 = tf.random.uniform((10,10))
